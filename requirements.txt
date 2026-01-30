@@ -38,6 +38,7 @@ ruamel.yaml==0.19.1
 six==1.17.0
 smmap==5.0.2
 streamlit==1.53.1
+streamlit-local-storage==0.0.25
 tenacity==9.1.2
 toml==0.10.2
 tornado==6.5.4

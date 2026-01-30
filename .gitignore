@@ -1,2 +1,5 @@
 menv
 *.pyc
+*.yaml
+__pycache__/
+guide.py
