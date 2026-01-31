@@ -16,7 +16,6 @@ class Generator:
         os.makedirs(output_dir, exist_ok=True)
         pdf_path = os.path.join(output_dir, "resume.pdf")
 
-        # Document Setup (A4)
         doc = SimpleDocTemplate(
             pdf_path,
             pagesize=A4,
@@ -28,7 +27,6 @@ class Generator:
         
         styles = getSampleStyleSheet()
         
-        # --- CUSTOM STYLES ---
         title_style = ParagraphStyle(
             'NameStyle', parent=styles['Heading1'], fontSize=24, 
             textColor=colors.HexColor("#2C3E50"), spaceAfter=2
@@ -43,7 +41,7 @@ class Generator:
         )
         body_text = ParagraphStyle(
             'Body', parent=styles['Normal'], fontSize=10, 
-            leading=12, alignment=0 # Left aligned
+            leading=12, alignment=0
         )
         sidebar_text = ParagraphStyle(
             'Sidebar', parent=styles['Normal'], fontSize=9, 
@@ -52,13 +50,11 @@ class Generator:
 
         elements = []
 
-        # --- HEADER ---
         elements.append(Paragraph(data.get("name", "Applicant").upper(), title_style))
         elements.append(Paragraph(data.get("title", ""), subtitle_style))
         elements.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#BDC3C7"), spaceAfter=15))
 
-        # --- TWO COLUMN CONTENT ---
-        # Left Sidebar Content
+        
         sidebar_items = []
         sidebar_items.append(Paragraph("<b>CONTACT</b>", sidebar_text))
         sidebar_items.append(Spacer(1, 0.2*cm))
@@ -66,7 +62,6 @@ class Generator:
         sidebar_items.append(Paragraph(data.get("phone", ""), sidebar_text))
         sidebar_items.append(Paragraph(data.get("location", ""), sidebar_text))
         
-        # Add Custom Sections to Sidebar (e.g. Skills)
         if "custom_sections" in data:
             for section in data["custom_sections"]:
                 sidebar_items.append(Spacer(1, 0.5*cm))
@@ -75,15 +70,12 @@ class Generator:
                 content_bullets = section['content'].replace('\n', '<br/>')
                 sidebar_items.append(Paragraph(content_bullets, sidebar_text))
 
-        # Right Main Content
         main_items = []
         
-        # Summary
         if data.get("summary"):
             main_items.append(Paragraph("<b>PROFESSIONAL SUMMARY</b>", section_header))
             main_items.append(Paragraph(data["summary"], body_text))
 
-        # Experience
         if data.get("experience"):
             main_items.append(Paragraph("<b>WORK EXPERIENCE</b>", section_header))
             for exp in data["experience"]:
@@ -94,7 +86,6 @@ class Generator:
                 main_items.append(Paragraph(exp.get("highlights", "").replace('\n', '<br/>'), body_text))
                 main_items.append(Spacer(1, 0.3*cm))
 
-        # Education
         if data.get("education"):
             main_items.append(Paragraph("<b>EDUCATION</b>", section_header))
             for edu in data["education"]:
@@ -103,7 +94,6 @@ class Generator:
                 main_items.append(Paragraph(f"<i>{edu['start_date']} — {edu['end_date']}</i>", body_text))
                 main_items.append(Spacer(1, 0.2*cm))
 
-        # Build the Layout Table (Sidebar: 30%, Main: 70%)
         col_widths = [5.5*cm, 13.5*cm]
         layout_table = Table([[sidebar_items, main_items]], colWidths=col_widths)
         layout_table.setStyle(TableStyle([

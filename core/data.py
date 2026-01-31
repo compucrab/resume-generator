@@ -25,13 +25,11 @@ ACTION_VERBS = {
     ]
 }
 
-# Common weak words to avoid
 WEAK_WORDS = [
     'responsible for', 'duties included', 'worked on', 'helped with',
     'assisted with', 'participated in', 'involved in', 'was part of'
 ]
 
-# Keywords for different industries
 INDUSTRY_KEYWORDS = {
     'software': [
         'agile', 'scrum', 'CI/CD', 'microservices', 'API', 'cloud',

@@ -34,7 +34,7 @@ class StateManager:
         for i, step in enumerate(StateManager.STEPS):
             with cols[i]:
                 if i < current_index:
-                    st.caption(f"✅ {step}")
+                    st.caption(f":material/check_circle: {step}")
                 elif i == current_index:
                     st.markdown(f"**🔵 {step}**")
                 else:
