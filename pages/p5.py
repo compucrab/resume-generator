@@ -23,10 +23,16 @@ custom_sections_data = []
 
 for i in range(st.session_state.custom_count):
     current = existing_custom[i] if i < len(existing_custom) else {}
-    
-    with st.expander(f"✨ Section #{i+1}: {current.get('title', 'New Section')}", expanded=True):
-        # --- REMOVAL LOGIC ---
-        if st.button(f"Remove Section #{i+1}", key=f"remove_custom_{i}", type="secondary", icon=":material/delete:"):
+
+    with st.expander(
+        f"✨ Section #{i+1}: {current.get('title', 'New Section')}", expanded=True
+    ):
+        if st.button(
+            f"Remove Section #{i+1}",
+            key=f"remove_custom_{i}",
+            type="secondary",
+            icon=":material/delete:",
+        ):
             StateManager.remove_item("custom_sections", i)
             st.session_state.custom_count = max(0, st.session_state.custom_count - 1)
             st.rerun()
@@ -37,7 +43,7 @@ for i in range(st.session_state.custom_count):
             value=current.get("title", ""),
             placeholder="e.g., Certifications",
         )
-        
+
         section_content = st.text_area(
             "Content",
             key=f"custom_content_{i}",
@@ -46,29 +52,27 @@ for i in range(st.session_state.custom_count):
             height=150,
         )
 
-        custom_sections_data.append({
-            "title": section_title,
-            "content": section_content
-        })
+        custom_sections_data.append(
+            {"title": section_title, "content": section_content}
+        )
 
 st.divider()
 
 if st.button("🚀 Generate PDF Resume", type="primary", use_container_width=True):
-    # ... validation logic ...
     with st.spinner("AI is crafting your PDF..."):
         st.session_state.form_data["custom_sections"] = custom_sections_data
-        
         pdf_path, error = Generator.generate_pdf(st.session_state.form_data)
-        
         if error:
             st.error(f"Generation failed: {error}")
+
         elif pdf_path and os.path.exists(pdf_path):
             st.success("Resume Generated Successfully!")
             with open(pdf_path, "rb") as f:
+                pdf_bytes = f.read()
                 st.download_button(
                     label="Click here to Download PDF",
-                    data=f,
+                    data=pdf_bytes,
                     file_name=f"Resume_{datetime.now().strftime('%Y%m%d')}.pdf",
                     mime="application/pdf",
-                    use_container_width=True
+                    use_container_width=True,
                 )

@@ -3,3 +3,4 @@ menv
 *.yaml
 __pycache__/
 guide.py
+resume_output/

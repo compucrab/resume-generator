@@ -33,7 +33,7 @@ class EducationEntry:
     institution: str
     degree: str
     field: str
-    start_date: Any  # This will be a datetime.date object
+    start_date: Any
     end_date: Any
     gpa: str
     highlights: str
@@ -50,9 +50,7 @@ class ResumeValidator:
 
     @staticmethod
     def validate_phone(phone) -> bool:
-        # 1. Remove common formatting characters
         clean_phone = re.sub(r"[\s\-\(\)\+]", "", phone)
-        # 2. Check if the result is strictly digits and has a reasonable length
         return clean_phone.isdigit() and 10 <= len(clean_phone) <= 15
 
     @classmethod
@@ -176,7 +174,7 @@ class ResumeValidator:
     def validate_projects(cls, entries: list) -> ValidationResult:
         errors = []
         if not entries:
-            return ValidationResult(is_valid=True)  # Projects can be optional
+            return ValidationResult(is_valid=True)
         for i, entry in enumerate(entries):
             if not entry.get("name"):
                 errors.append(
