@@ -3,3 +3,10 @@ toolbarMode = "viewer"
 
 [ui]
 hideTopBar = true
+
+[theme]
+primaryColor = "#2563eb"                 # Calm modern blue
+backgroundColor = "#15161a"              # Deep slate (dark)
+secondaryBackgroundColor = "#141414"     # Slight contrast
+textColor = "#e5e7eb"                    # Soft white
+font = "sans serif"
